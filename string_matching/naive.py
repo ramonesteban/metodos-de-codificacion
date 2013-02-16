@@ -1,14 +1,22 @@
-text = 'aababaabababbaabababababaabbababababaabbababbababba'
-p = 'abba'
-counter = 0
-for i in range(len(text)):
-    part = ''
-    try:
-        part = text[i] + text[i+1] + text[i+2] + text[i+3]
-        if p == part:
-            print i
+def matching(text, pattern):
+    counter = 0
+    positions = list()
+    for i in range(len(text) - len(pattern) + 1):
+        section = ''
+        for j in range(len(pattern)):
+            section += text[i+j]
+        if section == pattern:
             counter += 1
-    except:
-        pass
+            positions.append(i)
+    return positions, counter
 
-print counter
+def main():
+    text = 'aababaabababbabbabababaabbababababaabbababbababba'
+    pattern = 'abba'
+    positions, counter = matching(text, pattern)
+    print 'Positions', positions
+    print 'Total', counter
+
+if __name__ == '__main__':
+    main()
+

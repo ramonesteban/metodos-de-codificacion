@@ -1,21 +1,30 @@
-def matching(text, pattern):
-    counter = 0
-    positions = list()
-    for i in range(len(text) - len(pattern) + 1):
+def naive(pattern, text):
+    # Used variables:
+    # m - length of the pattern
+    # n - length of the text
+
+    matches_positions = list()
+    comparations = 0
+
+    m = len(pattern)
+    n = len(text)
+
+    for i in range(n - m + 1):
         section = ''
-        for j in range(len(pattern)):
+        for j in range(m):
             section += text[i+j]
+            comparations += 1
         if section == pattern:
-            counter += 1
-            positions.append(i)
-    return positions, counter
+            matches_positions.append(i)
+    return matches_positions, comparations
 
 def main():
-    text = 'aababaabababbabbabababaabbababababaabbababbababba'
     pattern = 'abba'
-    positions, counter = matching(text, pattern)
-    print 'Positions', positions
-    print 'Total', counter
+    text = 'abbabababbaaababbabbbabbabbabbaabbbabaabba'
+    matches_positions, comparations = naive(pattern, text)
+    print 'Matching positions', matches_positions
+    print 'Total matches', len(matches_positions)
+    print 'Comparations', comparations
 
 if __name__ == '__main__':
     main()

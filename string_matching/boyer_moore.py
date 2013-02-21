@@ -6,7 +6,7 @@ def boyer_moore(pattern, text):
     # i - current position of the pattern
     # h - current position of the text
 
-    bad_character = bad_character_rule(pattern)
+    bad_character = bad_character_rule(pattern, text)
     matches_positions = list()
     comparations = 0
 
@@ -26,13 +26,16 @@ def boyer_moore(pattern, text):
         k += bad_character[text[h-1]]
     return matches_positions, comparations
 
-def bad_character_rule(pattern):
+def bad_character_rule(pattern, text):
     m = len(pattern)
+    n = len(text)
     bad_character = {}
 
+    for i in range(n - 1):
+        if text[i] not in pattern:
+            bad_character[text[i]] = m
     for i in range(m - 1):
         bad_character[pattern[i]] = m - 1 - i
-
     return bad_character
 
 def main():
@@ -45,3 +48,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

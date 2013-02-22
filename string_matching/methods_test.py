@@ -6,7 +6,7 @@ def naive(pattern, text):
     # n - length of the text
 
     matches_positions = list()
-    comparations = 0
+    counter = 0
 
     m = len(pattern)
     n = len(text)
@@ -16,12 +16,12 @@ def naive(pattern, text):
         section = ''
         for j in range(m):
             section += text[i+j]
-            comparations += 1
+            counter += 1
         if section == pattern:
             matches_positions.append(i)
     end = time.time()
     runtime = end - start
-    return matches_positions, runtime, comparations
+    return matches_positions, runtime, counter
 
 def boyer_moore(pattern, text):
     # Used variables:
@@ -33,7 +33,7 @@ def boyer_moore(pattern, text):
 
     bad_character = bad_character_rule(pattern, text)
     matches_positions = list()
-    comparations = 0
+    counter = 0
 
     m = len(pattern)
     n = len(text)
@@ -44,7 +44,7 @@ def boyer_moore(pattern, text):
         i = m
         h = k
         while i > 0 and pattern[i-1] == text[h-1]:
-            comparations += 1
+            counter += 1
             i -= 1
             h -= 1
         if i == 0:
@@ -54,7 +54,7 @@ def boyer_moore(pattern, text):
             k += bad_character[text[h-1]]
     end = time.time()
     runtime = end - start
-    return matches_positions, runtime, comparations
+    return matches_positions, runtime, counter
 
 def bad_character_rule(pattern, text):
     m = len(pattern)
@@ -77,7 +77,7 @@ def knuth_morris_pratt(pattern, text):
 
     table = kmp_table(pattern)
     matches_positions = list()
-    comparations = 0
+    counter = 0
 
     m = len(pattern)
     n = len(text)
@@ -87,7 +87,7 @@ def knuth_morris_pratt(pattern, text):
     start = time.time()
     while p + c < n:
         if pattern[p] == text[c + p]:
-            comparations += 1
+            counter += 1
             if p == m - 1:
                 matches_positions.append(c)
                 c += 1
@@ -103,7 +103,7 @@ def knuth_morris_pratt(pattern, text):
 
     end = time.time()
     runtime = end - start
-    return matches_positions, runtime, comparations
+    return matches_positions, runtime, counter
 
 def kmp_table(pattern):
     table = list()
@@ -153,14 +153,14 @@ def main():
     pattern, text = instance_generator(int(sys.argv[1]), int(sys.argv[2]))
     print pattern, text
 
-    matches_positions, runtime, comparations = naive(pattern, text)
-    print 'naive', matches_positions, runtime, comparations
+    matches_positions, runtime, counter = naive(pattern, text)
+    print 'naive', matches_positions, runtime, counter
 
-    matches_positions, runtime, comparations = boyer_moore(pattern, text)
-    print 'bm   ', matches_positions, runtime, comparations
+    matches_positions, runtime, counter = boyer_moore(pattern, text)
+    print 'bm   ', matches_positions, runtime, counter
 
-    matches_positions, runtime, comparations = knuth_morris_pratt(pattern, text)
-    print 'kmp  ', matches_positions, runtime, comparations
+    matches_positions, runtime, counter = knuth_morris_pratt(pattern, text)
+    print 'kmp  ', matches_positions, runtime, counter
 
 if __name__ == '__main__':
     main()
